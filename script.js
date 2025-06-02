@@ -15,9 +15,12 @@ function checkCode() {
 }
 
 // Handle click on lolli wrapper
+// Clean version - pulse stops, ripped version + form appear together
 function showForm() {
   const lolli = document.getElementById("lolliButton");
   const form = document.getElementById("formScreen");
+  
+  // Immediately show ripped version AND form
   lolli.setAttribute("data-open", "true");
   form.classList.add("revealed");
 }
