@@ -193,17 +193,30 @@ body::after {
   margin: 0 auto;
 }
 
+/* Pulse animation on original lollipop to show it's interactive */
 #lolliButton[data-open="false"] {
   content: url('lolli-orig.png');
+  animation: subtle-pulse 2s ease-in-out infinite;
 }
 
-#lolliButton[data-open="false"]:hover {
-  content: url('lolli-hover.png');
+@keyframes subtle-pulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.03); 
+    opacity: 0.9;
+  }
 }
 
+/* Remove all hover states - going direct */
+
+/* After click: show ripped version */
 #lolliButton[data-open="true"] {
   content: url('lolli-hover.png');
   pointer-events: none;
+  animation: none; /* Stop pulsing once opened */
 }
 
 #formScreen {
