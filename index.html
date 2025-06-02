@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>After Broadway</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Page 1: Passcode Screen -->
+  <div id="page1" class="page">
+    <img src="angel-devil.png" class="top-image" alt="Angel and Devil">
+    <h1 class="tagline">Good friends, bad decisions.</h1>
+    <div class="input-group" style="flex-direction: row; gap: 0.5em;">
+      <input type="password" id="codeInput" placeholder="What's the magic word...">
+      <button class="submit-btn" onclick="checkCode()">Get in</button>
+    </div>
+  </div>
+
+  <!-- Page 2: Lolli Button and Form -->
+  <div id="page2" class="page hidden">
+    <img src="lolli-orig.png" id="lolliButton" class="clickable" alt="RIP ME" data-open="false" onclick="showForm()">
+    <div id="formScreen">
+      <form id="signupForm" onsubmit="submitForm(event)">
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="tel" name="phone" placeholder="Phone Number" required />
+        <button type="submit" id="submitBtn">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Page 3: Final Message Only -->
+  <div id="page3" class="page hidden">
+    <img src="lolli.png" id="rotatingLollipop" alt="After Broadway Lollipop">
+    <p class="finalDate">June 6th. 10pm. North Beach.</p>
+    <p class="typewriter" id="typewriter">📍 drop day of...</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

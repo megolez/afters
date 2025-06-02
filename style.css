@@ -1,0 +1,218 @@
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: 'Courier New', monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.page {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 2em;
+}
+
+.page:not(.hidden) {
+  display: flex;
+}
+
+.top-image {
+  max-width: 200px;
+  margin-bottom: 1em;
+}
+
+.tagline {
+  font-size: 1.2em;
+  font-weight: normal;
+}
+
+.finalText, .finalDate {
+  margin: 1em 0;
+}
+
+.typewriter {
+  font-size: 1em;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 0.15em solid white;
+  width: 0;
+  margin-top: 1em;
+  display: inline-block;
+  animation: blink-caret 0.75s step-end infinite;
+}
+
+.typewriter.typing {
+  width: auto;
+  animation: 
+    typing var(--typing-duration, 3s) steps(var(--char-count, 20), end) forwards,
+    blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { 
+    width: 0; 
+  }
+  to { 
+    width: calc(var(--char-count, 20) * 0.6em);
+  }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: white; }
+}
+
+.input-group {
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.input-group input,
+.input-group button,
+form input,
+form button {
+  padding: 10px;
+  margin: 0.5em 0;
+  font-size: 0.8em;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Courier New', monospace;
+  box-sizing: border-box;
+}
+
+.input-group input,
+form input {
+  background: #222;
+  color: white;
+  width: 200px;
+}
+
+.submit-btn {
+  background: red;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+  padding: 10px;
+  height: 42px;
+  font-size: 0.9em;
+  width: auto;
+}
+
+.submit-btn:hover,
+form button:hover {
+  background: #ff4444;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form button {
+  background: red;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 200px;
+}
+
+#formScreen form input,
+#formScreen form button {
+  width: 200px;
+}
+
+.clickable {
+  cursor: pointer;
+  max-width: 200px;
+  transition: transform 0.2s;
+}
+
+.clickable:hover {
+  transform: scale(1.05);
+}
+
+#rotatingLollipop {
+  max-width: 150px;
+  animation: spin 5s linear infinite;
+  margin-bottom: 1em;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Pixel glitch overlay */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 0.03) 0px,
+    transparent 1px,
+    rgba(255, 255, 255, 0.03) 2px,
+    transparent 3px
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 999;
+  animation: glitch 1s steps(2, start) infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(1px, -1px); }
+  60% { transform: translate(-1px, -1px); }
+  80% { transform: translate(1px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Ensure only lollipop and text show on page 3 */
+#page3 img:not(#rotatingLollipop),
+#page3 form,
+#page3 .clickable {
+  display: none !important;
+}
+
+#lolliButton {
+  width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+#lolliButton[data-open="false"] {
+  content: url('lolli-orig.png');
+}
+
+#lolliButton[data-open="false"]:hover {
+  content: url('lolli-hover.png');
+}
+
+#lolliButton[data-open="true"] {
+  content: url('lolli-hover.png');
+  pointer-events: none;
+}
+
+#formScreen {
+  display: none;
+}
+
+#formScreen.revealed {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1em;
+}
