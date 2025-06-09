@@ -160,11 +160,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1em;
+  gap: 3em;
   margin: 1em 0;
 }
 .side-image {
-  width: 30px;
+  width: 60px;
   height: auto;
 }
 .pulse-image {
@@ -175,6 +175,20 @@ body {
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.05); }
+}
+
+/* ────────────────────────────────── */
+/* MOBILE: tighter footer layout */
+@media (max-width: 480px) {
+  #footerPulse {
+    gap: 1em;         /* pull icons closer */
+  }
+  .side-image {
+    width: 30px;      /* shrink side icons */
+  }
+  .pulse-image {
+    width: 150px;     /* shrink center icon */
+  }
 }
 
 /* ───────────────────────────────────────────────────────────────── */
