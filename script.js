@@ -34,7 +34,7 @@ document.getElementById('codeInput')
 // ──────────────────────────────────────────────────────────────────
 // 2) BUILD GALLERY & LIGHTBOX
 // Auto-generate img1.jpg through img65.jpg
-const images = Array.from({ length: 65 }, (_, i) => `img${i+1}.jpg`);
+const images = Array.from({ length: 65 }, (_, i) => `img${i+1}.JPG`);
 
 function buildGallery() {
   const gallery = document.getElementById('gallery');
