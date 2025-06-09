@@ -1,3 +1,5 @@
+/* ───────────────────────────────────────────────────────────────── */
+/* BASE & PAGE LAYOUT */
 body {
   margin: 0;
   background: black;
@@ -7,7 +9,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .page {
@@ -17,85 +19,55 @@ body {
   text-align: center;
   width: 100%;
   padding: 2em;
+  justify-content: center;
 }
-
 .page:not(.hidden) {
   display: flex;
 }
 
+/* Page 2: pin at top, children start at top, scroll vertically */
+#page2 {
+  align-self: flex-start;
+  justify-content: flex-start;
+  padding-top: 2em;
+  padding-bottom: 4em;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ───────────────────────────────────────────────────────────────── */
+/* PAGE 1 ELEMENTS */
 .top-image {
   max-width: 200px;
   margin-bottom: 1em;
 }
-
 .tagline {
-  font-size: 1.2em;
-  font-weight: normal;
-}
-
-.finalText, .finalDate {
-  margin: 1em 0;
-}
-
-.typewriter {
   font-size: 1em;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 0.15em solid white;
-  width: 0;
-  margin-top: 1em;
-  display: inline-block;
-  animation: blink-caret 0.75s step-end infinite;
+  font-weight: normal;
+  margin-bottom: 0.5em;
 }
-
-.typewriter.typing {
-  width: auto;
-  animation: 
-    typing var(--typing-duration, 3s) steps(var(--char-count, 20), end) forwards,
-    blink-caret 0.75s step-end infinite;
-}
-
-@keyframes typing {
-  from { 
-    width: 0; 
-  }
-  to { 
-    width: calc(var(--char-count, 20) * 0.6em);
-  }
-}
-
-@keyframes blink-caret {
-  from, to { border-color: transparent; }
-  50% { border-color: white; }
-}
-
 .input-group {
   display: flex;
   justify-content: center;
   gap: 0.5em;
   flex-wrap: wrap;
 }
-
 .input-group input,
-.input-group button,
-form input,
-form button {
+.input-group button {
   padding: 10px;
   margin: 0.5em 0;
   font-size: 0.8em;
   border: none;
   border-radius: 5px;
-  font-family: 'Courier New', monospace;
+  font-family: inherit;
   box-sizing: border-box;
 }
-
-.input-group input,
-form input {
+.input-group input {
   background: #222;
-  color: white;
+  color: #fff;
   width: 200px;
 }
-
 .submit-btn {
   background: red;
   color: white;
@@ -104,128 +76,140 @@ form input {
   padding: 10px;
   height: 42px;
   font-size: 0.9em;
-  width: auto;
 }
-
-.submit-btn:hover,
-form button:hover {
+.submit-btn:hover {
   background: #ff4444;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ───────────────────────────────────────────────────────────────── */
+/* TYPEWRITER ANIMATION */
+.typewriter {
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 0.15em solid white;
+  width: 0;
+  margin-top: 1em;
+  display: inline-block;
+  animation: blink-caret 0.75s step-end infinite;
+}
+.typewriter.typing {
+  animation:
+    typing var(--typing-duration, 3s) steps(var(--char-count,20), end) forwards,
+    blink-caret 0.75s step-end infinite;
+}
+@keyframes typing {
+  from { width: 0; }
+  to   { width: calc(var(--char-count,20) * 0.6em); }
+}
+@keyframes blink-caret {
+  50% { border-color: transparent; }
 }
 
-form button {
-  background: red;
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s;
-  width: 200px;
-}
-
-#formScreen form input,
-#formScreen form button {
-  width: 200px;
-}
-
-.clickable {
-  cursor: pointer;
+/* ───────────────────────────────────────────────────────────────── */
+/* HEADER IMAGE WITH ENHANCED RED GLOW */
+#completeLolli {
+  display: block;
+  width: 100%;
   max-width: 200px;
-  transition: transform 0.2s;
+  height: auto;
+  margin: 0 auto 4em; /* increased bottom margin for more space */
+  animation: glow 4s ease-in-out infinite;
 }
 
-.clickable:hover {
-  transform: scale(1.05);
+/* red glow silhouette using drop-shadow with stronger visibility */
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(255,0,0,0.9));
+  }
+  50% {
+    filter: drop-shadow(0 0 50px rgba(255,0,0,0.6));
+  }
 }
 
-#rotatingLollipop {
-  max-width: 150px;
-  animation: spin 5s linear infinite;
+/* ───────────────────────────────────────────────────────────────── */
+/* GALLERY (2-column vertical film-roll) */
+#gallery {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  padding-bottom: 1em;
+  margin-top: 4em;
+}
+.photo-container {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  scroll-snap-align: start;
+  background: #111;
+}
+.photo-container img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: blur(4px);
+  transition: filter 0.3s ease;
+}
+
+/* ───────────────────────────────────────────────────────────────── */
+/* FOOTER IMAGES */
+#footerPulse {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3em;
+  margin: 1em 0;
+}
+.side-image {
+  width: 60px;
+  height: auto;
+}
+.pulse-image {
+  animation: pulse 2s ease-in-out infinite;
+  width: 200px;
+  height: auto;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+
+/* ───────────────────────────────────────────────────────────────── */
+/* LIGHTBOX */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1000;
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+  max-width: 90%; max-height: 80%;
+  border-radius: 8px;
   margin-bottom: 1em;
 }
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+#closeBtn {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
 }
-
-/* Pixel glitch overlay */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(255, 0, 0, 0.03) 0px,
-    transparent 1px,
-    rgba(255, 255, 255, 0.03) 2px,
-    transparent 3px
-  );
-  mix-blend-mode: screen;
-  pointer-events: none;
-  z-index: 999;
-  animation: glitch 1s steps(2, start) infinite;
-}
-
-@keyframes glitch {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-1px, 1px); }
-  40% { transform: translate(1px, -1px); }
-  60% { transform: translate(-1px, -1px); }
-  80% { transform: translate(1px, 1px); }
-  100% { transform: translate(0, 0); }
-}
-
-/* Ensure only lollipop and text show on page 3 */
-#page3 img:not(#rotatingLollipop),
-#page3 form,
-#page3 .clickable {
-  display: none !important;
-}
-
-#lolliButton {
-  width: 300px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-
-/* Pulse animation on original lollipop to show it's interactive */
-#lolliButton[data-open="false"] {
-  content: url('lolli-orig.png');
-  animation: subtle-pulse 2s ease-in-out infinite;
-}
-
-@keyframes subtle-pulse {
-  0%, 100% { 
-    transform: scale(1); 
-    opacity: 1;
-  }
-  50% { 
-    transform: scale(1.03); 
-    opacity: 0.9;
-  }
-}
-
-/* Remove all hover states - going direct */
-
-/* After click: show ripped version */
-#lolliButton[data-open="true"] {
-  content: url('lolli-hover.png');
-  pointer-events: none;
-  animation: none; /* Stop pulsing once opened */
-}
-
-#formScreen {
-  display: none;
-}
-
-#formScreen.revealed {
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 1em;
+#downloadBtn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
 }

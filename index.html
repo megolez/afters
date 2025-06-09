@@ -2,39 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>After Broadway</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>After Broadway Afters</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Complete lolli image styling */
+    #completeLolli {
+      display: block;
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      margin: 0 auto 1em;
+    }
+    /* Footer images styling: center, align, and spaced */
+    #footerPulse {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6em;
+      margin: 1em 0;
+    }
+    .side-image {
+      width: 60px;
+      height: auto;
+    }
+    .pulse-image {
+      animation: pulse 2s ease-in-out infinite;
+      display: inline-block;
+      width: 200px;
+      height: auto;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.05); }
+    }
+    /* Page2 top pin and scroll */
+    #page2 {
+      align-self: flex-start;
+      justify-content: flex-start;
+      padding-top: 2em;
+      padding-bottom: 4em;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+  </style>
 </head>
-
 <body>
-  <!-- Page 1: Passcode Screen -->
+  <!-- PAGE 1: Password Gate -->
   <div id="page1" class="page">
-    <img src="angel-devil.png" class="top-image" alt="Angel and Devil">
-    <h1 class="tagline">Good friends, bad decisions.</h1>
-    <div class="input-group" style="flex-direction: row; gap: 0.5em;">
-      <input type="password" id="codeInput" placeholder="What's the magic word...">
-      <button class="submit-btn" onclick="checkCode()">Get in</button>
+    <img src="angeldevil.png" class="top-image" alt="Angel and Devil Illustration" />
+    <h1 class="tagline typewriter" id="tagline">Party’s over, check out the afters.</h1>
+    <div class="input-group">
+      <input type="password" id="codeInput" placeholder="What's the magic word..." />
+      <button class="submit-btn" id="enterBtn">Get in</button>
     </div>
   </div>
 
-  <!-- Page 2: Lolli Button and Form -->
+  <!-- PAGE 2: Complete Lolli & Photo Gallery -->
   <div id="page2" class="page hidden">
-    <img src="lolli-orig.png" id="lolliButton" class="clickable" alt="RIP ME" data-open="false" onclick="showForm()">
-    <div id="formScreen">
-      <form id="signupForm" onsubmit="submitForm(event)">
-        <input type="text" name="name" placeholder="Name" required />
-        <input type="tel" name="phone" placeholder="Phone Number" required />
-        <button type="submit" id="submitBtn">Submit</button>
-      </form>
+    <!-- Static complete-lolli image -->
+    <img src="complete-lolli.png" id="completeLolli" alt="Completed Lollipop" />
+    <!-- Photo album grid populated by script.js -->
+    <div id="gallery"></div>
+    <!-- Footer images: left, center pulse, right -->
+    <div id="footerPulse">
+      <img src="left-image.png" class="side-image" alt="Left Footer Image" />
+      <img src="wrapper.png" class="pulse-image" alt="Center Footer Image" />
+      <img src="right-image.png" class="side-image" alt="Right Footer Image" />
     </div>
   </div>
 
-  <!-- Page 3: Final Message Only -->
-  <div id="page3" class="page hidden">
-    <img src="lolli.png" id="rotatingLollipop" alt="After Broadway Lollipop">
-    <p class="finalDate">June 6th. 10pm. North Beach.</p>
-    <p class="typewriter" id="typewriter">📍 drop day of...</p>
+  <!-- LIGHTBOX: Full-size image view -->
+  <div id="lightbox" class="lightbox">
+    <button id="closeBtn">&times;</button>
+    <img id="lightboxImg" src="" alt="Full-size photo" />
+    <button id="downloadBtn">Download</button>
   </div>
 
   <script src="script.js"></script>

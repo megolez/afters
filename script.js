@@ -1,108 +1,86 @@
-const secretCode = "magic8ball";
+// ──────────────────────────────────────────────────────────────────
+// 1) PASSCODE & TYPEWRITER BOOT
+const secretCode = 'magic8ball';  // set your actual code here
 
-// Replace with your actual Apps Script Web App URL
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAu_2O19RG1EH-nLlWuxiQ69kyA9ZfFtDTZOKW7hzwA0Nt3d9lkkfN-9GC5aVHZEmD_w/exec';
+// Kick off the typewriter on page1
+document.addEventListener('DOMContentLoaded', () => {
+  const tagline = document.getElementById('tagline');
+  const text    = tagline.textContent.trim();
+  tagline.style.setProperty('--char-count', text.length);
+  tagline.style.setProperty('--typing-duration', '4s');
+  tagline.classList.add('typing');
+});
 
-// Handle passcode entry
+// Check code, reveal page2, reset scroll, build gallery
 function checkCode() {
-  const input = document.getElementById("codeInput").value.toLowerCase();
-  if (input === secretCode) {
-    document.getElementById("page1").classList.add("hidden");
-    document.getElementById("page2").classList.remove("hidden");
+  const val = document.getElementById('codeInput').value.toLowerCase();
+  if (val === secretCode) {
+    document.getElementById('page1').classList.add('hidden');
+    const page2 = document.getElementById('page2');
+    page2.classList.remove('hidden');
+    page2.scrollTop = 0;               // ensure top image is visible
+    buildGallery();
   } else {
-    alert("Wrong code. Try again.");
+    alert('Wrong code. Try again.');
   }
 }
+document.getElementById('enterBtn')
+  .addEventListener('click', checkCode);
+document.getElementById('codeInput')
+  .addEventListener('keypress', e => {
+    if (e.key === 'Enter') { e.preventDefault(); checkCode(); }
+});
 
-// Handle click on lolli wrapper
-// Clean version - pulse stops, ripped version + form appear together
-function showForm() {
-  const lolli = document.getElementById("lolliButton");
-  const form = document.getElementById("formScreen");
-  
-  // Immediately show ripped version AND form
-  lolli.setAttribute("data-open", "true");
-  form.classList.add("revealed");
-}
+// ──────────────────────────────────────────────────────────────────
+// 2) BUILD GALLERY & LIGHTBOX
+// Auto-generate img1.jpg through img65.jpg
+const images = Array.from({ length: 65 }, (_, i) => `img${i+1}.jpg`);
 
-// Handle form submission to Google Sheets
-async function submitForm(event) {
-  event.preventDefault();
-  
-  const submitBtn = document.getElementById('submitBtn');
-  const originalText = submitBtn.textContent;
-  
-  // Show loading state
-  submitBtn.textContent = 'Submitting...';
-  submitBtn.disabled = true;
-  
-  try {
-    const formData = new FormData(event.target);
-    
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: formData
+function buildGallery() {
+  const gallery = document.getElementById('gallery');
+  images.forEach(src => {
+    const cont = document.createElement('div');
+    cont.className = 'photo-container';
+    const img = document.createElement('img');
+    img.src = src;
+    cont.appendChild(img);
+    gallery.appendChild(cont);
+
+    cont.addEventListener('click', () => {
+      img.style.filter = 'none';
+      openLightbox(src);
     });
-    
-    // Google Apps Script sometimes returns weird responses
-    // If we get any response (even if it seems like an error), 
-    // and the data is showing up in your sheet, then it worked!
-    console.log('Form submitted');
-    
-    // Always show the final page since your backend is working
-    showFinal();
-    
-  } catch (error) {
-    console.error('Error:', error);
-    
-    // Even if there's a "network error", the data might still be saved
-    // So let's show success but also give user option to check
-    showFinal();
-    
-    // Optional: uncomment the lines below if you want to show an error message
-    // submitBtn.textContent = originalText;
-    // submitBtn.disabled = false;
-    // alert('There was an error submitting your information. Please try again.');
-  }
+  });
 }
 
-// Show final page and start typewriter animation
-function showFinal() {
-  document.getElementById("page2").classList.add("hidden");
-  document.getElementById("page3").classList.remove("hidden");
-  startTypewriter();
+// LIGHTBOX OPEN/CLOSE & DOWNLOAD
+const lb       = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lightboxImg');
+const dlBtn    = document.getElementById('downloadBtn');
+const closeBtn = document.getElementById('closeBtn');
+
+function openLightbox(src) {
+  lbImg.src = src;
+  dlBtn.onclick = async () => {
+    try {
+      const resp = await fetch(src);
+      const blob = await resp.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = src.split('/').pop();
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      window.open(src, '_blank');
+    }
+  };
+  lb.classList.add('active');
 }
 
-function startTypewriter() {
-  const typewriter = document.getElementById('typewriter');
-  if (typewriter) {
-    const text = typewriter.textContent.trim();
-    const charCount = text.length;
-    const durationPerChar = 0.15;
-    const totalDuration = (charCount * durationPerChar).toFixed(2) + 's';
-
-    typewriter.classList.remove('typing');
-    typewriter.style.width = '0';
-    typewriter.offsetHeight;
-    
-    typewriter.style.setProperty('--char-count', charCount);
-    typewriter.style.setProperty('--typing-duration', totalDuration);
-    
-    setTimeout(() => {
-      typewriter.classList.add('typing');
-    }, 100);
-  }
-}
-
-// Optional: Enter key triggers checkCode
-document.addEventListener("DOMContentLoaded", () => {
-  const codeInput = document.getElementById("codeInput");
-  if (codeInput) {
-    codeInput.addEventListener("keypress", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        checkCode();
-      }
-    });
-  }
+closeBtn.addEventListener('click', () => lb.classList.remove('active'));
+lb.addEventListener('click', e => {
+  if (e.target === lb) lb.classList.remove('active');
 });
